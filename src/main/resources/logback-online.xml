@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    本配置文件用于程序上线状态的日志输出。
+
+    默认情况下，SpringBoot会将日志输出到StdOut, 而不是日志文件。
+    默认情况下，logback是SpringBoot的日志系统。
+
+    所以，本配置文件在本地调试程序的时候，不会被加载。
+
+    在线上环境中，需要通过 -Dlogging.config=classpath:logback-online.xml 参数来开启这个配置
+
+    相关文档: http://docs.spring.io/spring-boot/docs/2.0.0.BUILD-SNAPSHOT/reference/htmlsingle/#boot-features-custom-log-configuration
+-->
+<configuration>
+    <appender name="ailyFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>/data/logs/example_springboot_restful/server.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <FileNamePattern>server.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{35} : %msg %n</Pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="ailyFile"/>
+    </root>
+</configuration>
